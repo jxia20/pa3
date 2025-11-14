@@ -1,18 +1,18 @@
 (* heat_concurrent.ml *)
 open Common;;
 
-(* two grids we will swap each step *)
+(* These are the 2 grids that will swap on each step *)
 let curr_ref = ref (create_grid ());;
 let next_ref = ref (create_grid ());;
 
-(* swap the references (cheap) *)
+(* swap the references which is cheaper *)
 let swap_buffers () =
   let tmp = !curr_ref in
   curr_ref := !next_ref;
   next_ref := tmp
 ;;
 
-(* choose number of tiles (override with NUM_TILES env var) *)
+(* choose number of tiles, use env var NUM_TILES as override *)
 let tiles =
   let t =
     try int_of_string (Sys.getenv "NUM_TILES")
@@ -21,7 +21,7 @@ let tiles =
   split_rows t
 ;;
 
-(* A barrier: wait for n ticks, then wait() returns *)
+(* wait for n ticks, then wait() returns *)
 let make_barrier n =
   def count(k) & tick() = count(k-1)
    or count(0) & wait() = reply () to wait in

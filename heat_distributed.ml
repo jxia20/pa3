@@ -20,8 +20,6 @@ let run_worker port =
   (* Define a synchronous channel compute_remote *)
   let _ =
     def compute_remote (y0, y1, curr) =
-      (* curr : grid (float array array) *)
-
       (* allocate next grid *)
       let next = Array.init n (fun _ -> Array.make n 0.0) in
 
@@ -36,7 +34,7 @@ let run_worker port =
         next.(y).(n - 1) <- curr.(y).(n - 1)
       done;
 
-      (* compute interior rows y0..y1 *)
+      (* compute interior rows y0 to y1 *)
       compute_tile ~curr ~next ~y0 ~y1;
 
       (* build partial rows *)
@@ -51,7 +49,7 @@ let run_worker port =
       reply (y0, y1, partial) to compute_remote
     in
 
-    (* Register this synchronous channel under "heat_worker" *)
+    (* Register this synchronous channel under the heat worker *)
     Join.Ns.register Join.Ns.here "heat_worker"
       (compute_remote :
          int * int * grid -> int * int * (float array array));

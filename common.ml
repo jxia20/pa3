@@ -18,7 +18,7 @@ let write_grid (g:grid) (filename:string) =
     output_char oc '\n') g;
   close_out oc
 
-(* compute one tile of interior rows [y0..y1], cols 1..n-2 *)
+(* compute one tile of interior rows y0 to y1, cols 1 to n-2 *)
 let compute_tile ~(curr:grid) ~(next:grid) ~(y0:int) ~(y1:int) =
   for y = y0 to y1 do
     for x = 1 to n - 2 do
@@ -28,9 +28,9 @@ let compute_tile ~(curr:grid) ~(next:grid) ~(y0:int) ~(y1:int) =
     done
   done
 
-(* split interior rows 1..n-2 into ~equal tiles *)
+(* split interior rows 1 to n-2 into equal tiles *)
 let split_rows (tiles:int) : (int * int) list =
-  let total = (n - 2) in       (* rows 1..120 = 120 rows *)
+  let total = (n - 2) in       (* 120 rows *)
   let base = total / tiles in
   let extra = total mod tiles in
   let acc = ref [] in
